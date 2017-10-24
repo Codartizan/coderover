@@ -1,11 +1,8 @@
 package com.wirecard;
 
 import com.wirecard.util.FileHandler;
-import com.wirecard.util.Utility;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -26,7 +23,7 @@ public class Test {
                 if (lineStr.contains("PCODES")) {
                     System.out.println("|-- " + anClass.getName());
                     System.out.println("  |-- " + classList.indexOf(anClass));
-                    System.out.println("    |-- " + lineStr);
+                    System.out.println();
                 }
             }
         }

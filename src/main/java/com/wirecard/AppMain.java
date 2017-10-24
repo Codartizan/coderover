@@ -15,6 +15,11 @@ import java.util.ArrayList;
  */
 public class AppMain {
 
+    //TODO Combind the CODES - ispecs and reports in on spreadsheet; same for SCODE
+    //TODO Replace the GC- with the valu as defined in the GSDs
+    //TODO Drop the ".isp" and ".report" off the class name
+    //TODO where key 1 does not GLB.ZEROS can you replace the value with "Bank Number"
+
     public static void main(String argv[]) throws IOException {
         LogPrinter logPrinter = new LogPrinter();
         logPrinter.printLog();
@@ -25,11 +30,9 @@ public class AppMain {
         appMain.extractKeys("PSCODE", "Ispecs");
         appMain.extractKeys("PSCODE", "Reports");
 
-
-
     }
 
-    public void extractKeys(String profile, String folder) {
+    private void extractKeys(String profile, String folder) {
 
         String dir = "C:\\STD-07.05\\" + folder;
         FileHandler fh = new FileHandler();
@@ -47,7 +50,7 @@ public class AppMain {
                     int iPcodes = lineStr.indexOf(profile);
                     int iColon = lineStr.indexOf(":");
                     if (iColon < 0 || iColon > iPcodes) {
-                        
+
                         profileObj.setClaseName(anClass.getName());
                         profileObj.setLineNum(lineStrList.indexOf(lineStr) + 1);
                         String newAnLsStr = util.wipeOffComment(lineStr);
