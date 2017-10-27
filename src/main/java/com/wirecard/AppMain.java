@@ -15,7 +15,6 @@ import java.util.ArrayList;
  */
 public class AppMain {
 
-    //TODO Replace the GC- with the valu as defined in the GSDs
 
     public static void main(String argv[]) throws IOException {
         LogPrinter logPrinter = new LogPrinter();
@@ -40,6 +39,10 @@ public class AppMain {
 
     }
 
+    /*
+    * Extract Keys and other value from code
+    * Output a list of Profile objects
+     */
     private ArrayList<Profile> extractKeys(String profile, String folder) {
 
         String dir = "C:\\STD-07.05\\" + folder;

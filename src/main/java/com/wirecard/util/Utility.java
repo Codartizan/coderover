@@ -164,6 +164,10 @@ public class Utility {
 
     }
 
+    /*
+    * If Key 1 doesn't equal GLB.ZEROS,
+    * Replace it with BANK.NUMBER
+     */
     public String key1Modifier(String key1) {
 
         String newKey1;
@@ -176,6 +180,10 @@ public class Utility {
         return newKey1;
     }
 
+    /*
+    * If Key value type is a GC
+    * Extract out the corresponding value from GLOBALSD.GSD file
+     */
     public String gcFinder (String gcKey) {
 
         String gcValue = "";
