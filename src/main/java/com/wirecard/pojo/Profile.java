@@ -9,6 +9,8 @@ public class Profile {
     private String key1;
     private String key2;
     private String key3;
+    private String folder;
+    private String gcValue;
 
     public String getClaseName() {
         return claseName;
@@ -30,6 +32,14 @@ public class Profile {
         return key3;
     }
 
+    public String getFolder() {
+        return folder;
+    }
+
+    public String getGcValue() {
+        return gcValue;
+    }
+
     public void setClaseName(String claseName) {
         this.claseName = claseName;
     }
@@ -48,5 +58,13 @@ public class Profile {
 
     public void setKey3(String key3) {
         this.key3 = key3;
+    }
+
+    public void setFolder(String folder) {
+        this.folder = folder;
+    }
+
+    public void setGcValue(String gcValue) {
+        this.gcValue = gcValue;
     }
 }

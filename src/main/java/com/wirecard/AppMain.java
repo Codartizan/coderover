@@ -15,24 +15,32 @@ import java.util.ArrayList;
  */
 public class AppMain {
 
-    //TODO Combind the CODES - ispecs and reports in on spreadsheet; same for SCODE
     //TODO Replace the GC- with the valu as defined in the GSDs
-    //TODO Drop the ".isp" and ".report" off the class name
-    //TODO where key 1 does not GLB.ZEROS can you replace the value with "Bank Number"
 
     public static void main(String argv[]) throws IOException {
         LogPrinter logPrinter = new LogPrinter();
+        Utility util = new Utility();
         logPrinter.printLog();
-
+        ArrayList<Profile> pcodesArr = new ArrayList<>();
+        ArrayList<Profile> pscodeArr = new ArrayList<>();
         AppMain appMain = new AppMain();
-        appMain.extractKeys("PCODES", "Ispecs");
-        appMain.extractKeys("PCODES", "Reports");
-        appMain.extractKeys("PSCODE", "Ispecs");
-        appMain.extractKeys("PSCODE", "Reports");
+
+        ArrayList<Profile> pcodesIsp = appMain.extractKeys("PCODES", "Ispecs");
+        ArrayList<Profile> pcodesRep = appMain.extractKeys("PCODES", "Reports");
+        pcodesArr.addAll(pcodesIsp);
+        pcodesArr.addAll(pcodesRep);
+        util.toExcel(pcodesArr, "PCODES");
+
+        ArrayList<Profile> pscodeIsp = appMain.extractKeys("PSCODE", "Ispecs");
+        ArrayList<Profile> pscodeRep = appMain.extractKeys("PSCODE", "Reports");
+        pscodeArr.addAll(pscodeIsp);
+        pscodeArr.addAll(pscodeRep);
+        util.toExcel(pscodeArr, "PSCODE");
+
 
     }
 
-    private void extractKeys(String profile, String folder) {
+    private ArrayList<Profile> extractKeys(String profile, String folder) {
 
         String dir = "C:\\STD-07.05\\" + folder;
         FileHandler fh = new FileHandler();
@@ -50,8 +58,9 @@ public class AppMain {
                     int iPcodes = lineStr.indexOf(profile);
                     int iColon = lineStr.indexOf(":");
                     if (iColon < 0 || iColon > iPcodes) {
-
-                        profileObj.setClaseName(anClass.getName());
+                        String className = anClass.getName();
+                        profileObj.setClaseName(className.replace(className.substring(className.length() - 4), ""));
+                        profileObj.setFolder(folder);
                         profileObj.setLineNum(lineStrList.indexOf(lineStr) + 1);
                         String newAnLsStr = util.wipeOffComment(lineStr);
 
@@ -68,15 +77,17 @@ public class AppMain {
                         String value = RegularExpression.getValueByRegexPat(lineStr, "(\\([^\\)]+\\))");
                         ArrayList<String> keyList = util.strToList(value);
                         if (keyList.size() == 3) {
-                            profileObj.setKey1(keyList.get(0));
+                            profileObj.setKey1(util.key1Modifier(keyList.get(0)));
                             profileObj.setKey2(keyList.get(1));
                             profileObj.setKey3(keyList.get(2));
+                            profileObj.setGcValue(util.gcFinder(keyList.get(1)));
                         } else if (keyList.size() == 2) {
-                            profileObj.setKey1(keyList.get(0));
+                            profileObj.setKey1(util.key1Modifier(keyList.get(0)));
                             profileObj.setKey2(keyList.get(1));
                             profileObj.setKey3(" ");
+                            profileObj.setGcValue(util.gcFinder(keyList.get(1)));
                         } else if (keyList.size() == 1) {
-                            profileObj.setKey1(keyList.get(0));
+                            profileObj.setKey1(util.key1Modifier(keyList.get(0)));
                             profileObj.setKey2(" ");
                             profileObj.setKey3(" ");
                         }
@@ -105,7 +116,7 @@ public class AppMain {
         }
         System.out.println("The total volume of " + profile + " is " + profileObjList.size());
 
-        util.toExcel(profileObjList, profile + "_IN_" + folder);
+        return profileObjList;
 
     }
 }

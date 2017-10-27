@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 
 import java.awt.*;
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -129,6 +130,14 @@ public class Utility {
         cell.setCellStyle(cellStyle);
         cell.setCellValue("Key 3");
 
+        cell = header.createCell(5);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("GC-Value");
+
+        cell = header.createCell(6);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue("Folder");
+
         for (int i = 0; i < profileObjList.size(); i++) {
             HSSFRow row = sheet.createRow(i + 1);
             Profile profileObj = profileObjList.get(i);
@@ -138,6 +147,8 @@ public class Utility {
             row.createCell(2).setCellValue(profileObj.getKey1());
             row.createCell(3).setCellValue(profileObj.getKey2());
             row.createCell(4).setCellValue(profileObj.getKey3());
+            row.createCell(5).setCellValue(profileObj.getGcValue());
+            row.createCell(6).setCellValue(profileObj.getFolder());
 
         }
 
@@ -151,5 +162,35 @@ public class Utility {
             System.out.println("Output failed!");
         }
 
+    }
+
+    public String key1Modifier(String key1) {
+
+        String newKey1;
+        if (!key1.equals("GLB.ZEROS")) {
+            newKey1 = "BANK.NUMBER";
+        } else {
+            newKey1 = key1;
+        }
+
+        return newKey1;
+    }
+
+    public String gcFinder (String gcKey) {
+
+        String gcValue = "";
+        File gsd = new File(ConstantPath.GSD);
+        ArrayList<String> gsdArr = FileHandler.txtToArray(gsd);
+        if (gcKey.substring(0, 3).equals("GC-")) {
+            for (String aGsdArr : gsdArr) {
+                if (aGsdArr.contains(gcKey)) {
+                    gcValue = RegularExpression.getValueByRegexPat(aGsdArr, "(?<=\\()[^\\)]+");
+                }
+            }
+        } else {
+            gcValue = "";
+        }
+
+        return gcValue;
     }
 }

@@ -1,10 +1,8 @@
 package com.wirecard;
 
-import com.wirecard.util.FileHandler;
+import com.wirecard.util.Utility;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * ${CLASS} Created by tshi on 11/10/2017.
@@ -12,21 +10,10 @@ import java.util.ArrayList;
 public class Test {
 
     public static void main(String argv[]) throws IOException {
-        String dir = "C:\\STD-07.05\\Reports";
-        FileHandler fh = new FileHandler();
-        ArrayList<File> classList = fh.getFileList(dir);
+        Utility util = new Utility();
+        String s = util.gcFinder("GC-MP-ACCEL-RESN");
 
-        for (File anClass : classList) {
-            ArrayList<String> lineStrList;
-            lineStrList = FileHandler.txtToArray(anClass);
-            for(String lineStr : lineStrList) {
-                if (lineStr.contains("PCODES")) {
-                    System.out.println("|-- " + anClass.getName());
-                    System.out.println("  |-- " + classList.indexOf(anClass));
-                    System.out.println();
-                }
-            }
-        }
+        System.out.println(s);
 
     }
 }
